@@ -26,7 +26,7 @@ ENV PATH="/opt/venv/bin:$PATH"
 # Upgrade pip
 RUN pip3 install --upgrade pip
 
-# Install specific versions of the necessary Python packages
+# Install necessary Python packages
 RUN /opt/venv/bin/python -m pip install dataclasses==0.6 pydantic==1.8.2 referencing==3.9
 
 # Install Jupyter, Q#, Cirq, and Qiskit, as well as other packages
@@ -35,16 +35,13 @@ RUN pip3 install notebook_shim
 RUN pip3 install \
     qsharp \
     azure-quantum \
-    cirq \
-    'cirq-core[contrib]' \
-    qiskit \
     scipy \
-    ipympl
+    ipympl 
+    ipykernel
 
 # Install optional packages for specific quantum frameworks (uncomment as needed)
 # RUN pip3 install azure-quantum[qiskit]
 # RUN pip3 install azure-quantum[cirq]
-#    ipykernel \
 #    pyquil \
 #    projectq \
 #    qutip \
@@ -58,7 +55,7 @@ RUN pip3 install \
 #    amazon-braket-sdk \
 #    strangeworks \
 #    pyEPR-quantum \
-#    quantum-viz \
+#    quantum-viz
 
 # Expose port for Jupyter Notebook
 EXPOSE 8888
