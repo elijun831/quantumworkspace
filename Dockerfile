@@ -1,10 +1,35 @@
 # Base image
-FROM python:3.11.8-bookworm
+FROM debian:latest
+
+# Install necessary packages
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    g++ \
+    git \
+    libblas-dev \
+    libffi-dev \
+    liblapack-dev \
+    libssl-dev \
+    make \
+    wget \
+    zlib1g-dev \
+    python3 \
+    python3-venv
+
+# Create a virtual environment
+RUN python3 -m venv /opt/venv
+
+# Make sure we use the virtualenv:
+ENV PATH="/opt/venv/bin:$PATH"
 
 # Upgrade pip
 RUN pip3 install --upgrade pip
 
-# Install Jupyter, Q#, Cirq, and Qiskit
+# Install specific versions of the necessary Python packages
+RUN /opt/venv/bin/python -m pip install dataclasses==0.6 pydantic==1.8.2 referencing==3.9
+
+# Install Jupyter, Q#, Cirq, and Qiskit, as well as other packages
 RUN pip3 install jupyter -U && pip3 install jupyterlab
 RUN pip3 install notebook_shim
 RUN pip3 install \
@@ -12,13 +37,14 @@ RUN pip3 install \
     azure-quantum \
     cirq \
     'cirq-core[contrib]' \
-    qiskit
+    qiskit \
+    scipy \
+    ipympl
 
 # Install optional packages for specific quantum frameworks (uncomment as needed)
 # RUN pip3 install azure-quantum[qiskit]
 # RUN pip3 install azure-quantum[cirq]
 #    ipykernel \
-#    ipympl \
 #    pyquil \
 #    projectq \
 #    qutip \
@@ -47,8 +73,8 @@ COPY . /app
 RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
 
 # Make sure that Jupyter is on the notebook users' path.
-ENV PATH=$PATH:/usr/local/bin \
-    JUPYTER_ROOT=/usr/local/bin
+ENV PATH=$PATH:/usr/local/bin
+ENV JUPYTER_ROOT=/usr/local/bin
 
 USER appuser
 
