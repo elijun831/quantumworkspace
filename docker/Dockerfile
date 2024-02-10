@@ -37,6 +37,8 @@ RUN pip3 install --no-cache-dir jupyter -U jupyterlab notebook_shim \
     qiskit \
     qiskit-ibm-runtime \
     qiskit[visualization] \
+    amazon-braket-sdk \
+    cirq \
     ipykernel \
     ipympl
 
@@ -56,7 +58,6 @@ RUN pip3 install --no-cache-dir jupyter -U jupyterlab notebook_shim \
 #   pytket \
 #   bloqade \
 #   braket \
-#   amazon-braket-sdk \
 #   amazon-braket-algorithm-library
 #   strangeworks \
 #   pyEPR-quantum \
