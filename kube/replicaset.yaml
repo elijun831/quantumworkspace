@@ -1,0 +1,30 @@
+# For creating the ReplicaSet
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: quantumpackage
+  labels:
+    app: quantumpackage
+spec:
+  replicas: 3 # Could be any number
+  selector:
+    matchLabels:
+      app: quantumpackage
+  template:
+    metadata:
+      labels:
+        app: quantumpackage
+    spec:
+      containers:
+      - name: quantumpackage
+        image: elijun831/quantumpackage:qiskit-and-qsharp
+        command: ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+        ports:
+        - containerPort: 8888
+        resources:
+          requests:
+            cpu: 100m
+            memory: 500Mi
+          limits:
+            cpu: 500m
+            memory: 2Gi
