@@ -1,5 +1,4 @@
 version: '3.8'
-
 services:
   app:
     build:
@@ -7,8 +6,11 @@ services:
       dockerfile: Dockerfile
     environment:
       - PYTHONUNBUFFERED=1
-    entrypoint: /usr/local/bin/python3.11
-    command: ["-m", "debugpy", "--wait-for-client", "--listen", "0.0.0.0:5678", "/app/app.py"]
+    entrypoint: ["/opt/venv/bin/python", "-m", "debugpy", "--wait-for-client", "--listen", "0.0.0.0:5678"]
+    command: ["jupyter", "notebook", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
     ports:
       - 8888:8888
       - 5678:5678
+    volumes:
+      - ./notebooks:/notebooks
+    user: "appuser"
