@@ -1,6 +1,6 @@
 # QuantumPackage
 
-This repository contains a Dockerfile for setting up a Jupyer notebook environment with QSharp and Azure Quantum, built upon the latest Debian version.
+This repository contains a Dockerfile for setting up a Jupyer notebook environment with Qiskit and QSharp, built upon the latest Debian version.
 
 ## Prerequisites
 
