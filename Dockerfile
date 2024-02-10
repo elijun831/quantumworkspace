@@ -30,16 +30,20 @@ RUN pip3 install --upgrade pip
 # Install specific versions of the necessary Python packages
 RUN /opt/venv/bin/python -m pip install --no-cache-dir dataclasses pydantic referencing
 
-# Install Jupyter, Q#, and necessary packages
+# Install Jupyter, Q#, qiskit, and necessary packages
 RUN pip3 install --no-cache-dir jupyter -U jupyterlab notebook_shim \
     qsharp \
     azure-quantum \
+    qiskit \
+    qiskit-ibm-runtime \
+    qiskit[visualization] \
     ipykernel \
     ipympl
 
 # Install optional packages for specific quantum frameworks (uncomment as needed)
 # RUN pip3 install azure-quantum[qiskit]
 # RUN pip3 install azure-quantum[cirq]
+#   cirq \
 #   scipy \
 #   pyquil \
 #   projectq \
