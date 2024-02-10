@@ -44,6 +44,7 @@ RUN pip3 install --no-cache-dir jupyter -U jupyterlab notebook_shim \
 # RUN pip3 install azure-quantum[qiskit]
 # RUN pip3 install azure-quantum[cirq]
 #   cirq \
+#   cirq-core[contrib] \
 #   scipy \
 #   pyquil \
 #   projectq \
@@ -56,9 +57,10 @@ RUN pip3 install --no-cache-dir jupyter -U jupyterlab notebook_shim \
 #   bloqade \
 #   braket \
 #   amazon-braket-sdk \
+#   amazon-braket-algorithm-library
 #   strangeworks \
 #   pyEPR-quantum \
-#   quantum-viz \
+#   quantum-viz
 
 # Expose port for Jupyter Notebook
 EXPOSE 8888
