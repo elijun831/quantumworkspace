@@ -1,33 +1,34 @@
-# Ignore OS generated files
-**/.DS_Store
+# Ignore everything
+**
+
+# Except Dockerfile
+!Dockerfile
 
 # Ignore Python cache files
 **/__pycache__
 **/*.pyc
 **/*.pyo
+**/*.pyd
 
-# Ignore temporary files
-**/*~
+# Ignore git and vscode directories
+.git
+.vscode
 
-# Ignore IDE/project files
-**/.classpath
-**/.dockerignore
-**/.env
-**/.git
-**/.gitignore
-**/.project
-**/.settings
-**/.toolstarget
-**/.vs
-**/.vscode
-**/*.*proj.user
+# Ignore log files
+*.log
 
-# Ignore database files
-**/*.dbmdl
-**/*.jfm
-
-# Ignore Python virtual environment
-**/venv
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
 
 # Ignore Jupyter notebook checkpoints
 **/.ipynb_checkpoints
+
+# Ignore Python virtual environment
+/opt/venv
+
+# Ignore application directory
+/app
+
+# Ignore notebooks directory
+/notebooks
