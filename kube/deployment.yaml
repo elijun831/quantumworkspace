@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quantumpackage-deployment
+  labels:
+    app: quantumpackage
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: quantumpackage
+  template:
+    metadata:
+      labels:
+        app: quantumpackage
+    spec:
+      containers:
+      - name: quantumpackage
+        image: elijun831/quantumpackage:qiskit-and-qsharp
+        ports:
+        - containerPort: 8888
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+          requests:
+            cpu: "0.5"
+            memory: "512Mi"
