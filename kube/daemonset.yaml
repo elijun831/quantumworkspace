@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: jupyter-daemonset
+  labels:
+    app: jupyter
+spec:
+  selector:
+    matchLabels:
+      name: jupyter
+  template:
+    metadata:
+      labels:
+        name: jupyter
+    spec:
+      containers:
+      - name: jupyter
+        image: <your-docker-image>  # replace with your Docker image
+        ports:
+        - containerPort: 8888
+        volumeMounts:
+        - name: notebooks-volume
+          mountPath: /notebooks
+      volumes:
+      - name: notebooks-volume
+        hostPath:
+          path: /var/data/notebooks  # replace with the path on your host
