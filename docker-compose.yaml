@@ -4,13 +4,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    environment:
-      - PYTHONUNBUFFERED=1
-    entrypoint: /usr/local/bin/python3
-    command: ["-m", "debugpy", "--wait-for-client", "--listen", "0.0.0.0:5678", "/app/app.py"]
     ports:
-      - 8888:8888
-      - 5678:5678
+      - "8888:8888"
     volumes:
-      - .:/app
+      - ./notebooks:/notebooks
     user: "appuser"
