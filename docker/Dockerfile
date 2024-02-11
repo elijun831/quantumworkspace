@@ -38,7 +38,6 @@ RUN pip3 install --no-cache-dir jupyter -U jupyterlab notebook_shim \
     qiskit-ibm-runtime \
     qiskit[visualization] \
     amazon-braket-sdk \
-    cirq \
     ipykernel \
     ipympl
 
