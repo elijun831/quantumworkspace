@@ -30,7 +30,7 @@ RUN pip3 install --upgrade pip
 # Install specific versions of the necessary Python packages
 RUN /opt/venv/bin/python -m pip install --no-cache-dir dataclasses pydantic referencing
 
-# Install Jupyter, Q#, qiskit, and necessary packages
+# Install Jupyter, Q#, Qiskit, Amazon Braket, and necessary packages
 RUN pip3 install --no-cache-dir jupyter -U jupyterlab notebook_shim \
     qsharp \
     azure-quantum \
@@ -38,6 +38,7 @@ RUN pip3 install --no-cache-dir jupyter -U jupyterlab notebook_shim \
     qiskit-ibm-runtime \
     qiskit[visualization] \
     amazon-braket-sdk \
+    amazon-braket-algorithm-library \
     ipykernel \
     ipympl
 
@@ -57,7 +58,6 @@ RUN pip3 install --no-cache-dir jupyter -U jupyterlab notebook_shim \
 #   pytket \
 #   bloqade \
 #   braket \
-#   amazon-braket-algorithm-library
 #   strangeworks \
 #   pyEPR-quantum \
 #   quantum-viz
