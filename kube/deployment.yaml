@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: quantumpackage
-        image: elijun831/quantumpackage:qiskit-and-qsharp
+        image: elijun831/quantumpackage:1.0.0
         ports:
         - containerPort: 8888
         resources:
