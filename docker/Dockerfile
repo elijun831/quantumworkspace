@@ -44,6 +44,7 @@ RUN pipenv install --deploy
 
 # Install Jupyter
 RUN pipenv install jupyter
+RUN pipenv run jupyter --version
 
 # Get the path of the pipenv virtual environment and store it in an environment variable
 RUN pipenv --venv > venv_path
@@ -100,7 +101,7 @@ RUN chmod -R 755 /app && chmod -R 755 /notebooks
 # ENV PATH=$PATH:/usr/local/bin:$(pipenv --venv)/bin
 # ENV JUPYTER_ROOT=/usr/local/bin
 
-USER appuser
+USER root
 
 # Start Jupyter Notebook
-CMD ["pipenv", "run", "jupyter", "notebook", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
+CMD ["pipenv", "run", "jupyter", "notebook", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
