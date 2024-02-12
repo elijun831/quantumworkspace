@@ -104,6 +104,3 @@ USER appuser
 
 # Start Jupyter Notebook
 CMD ["pipenv", "run", "jupyter", "notebook", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
-
-# Start Jupyter Notebook
-CMD ["jupyter", "notebook", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
