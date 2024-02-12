@@ -43,14 +43,15 @@ COPY Pipfile Pipfile.lock /app/
 RUN pipenv install --deploy
 
 # Install Jupyter
-RUN pipenv run pip install jupyter
+RUN pipenv install jupyter
 
 # Get the path of the pipenv virtual environment and store it in an environment variable
-RUN echo "export PIPENV_VENV_PATH=$(pipenv --venv)" >> ~/.bashrc
+RUN pipenv --venv > venv_path
+RUN echo "export PIPENV_VENV_PATH=$(pipenv --venv)" > ~/.bashrc
 RUN /bin/bash -c "source ~/.bashrc"
 
 # Add the pipenv virtual environment to the PATH
-ENV PATH=$PATH:$PIPENV_VENV_PATH/bin
+ENV PATH=$PATH:/root/.local/share/virtualenvs/app-*/bin
 
 # Install optional packages for specific quantum frameworks (uncomment as needed)
 # # Uncomment the following lines and add them to your Pipfile to install these packages:
@@ -96,7 +97,7 @@ RUN chown -R appuser:appuser /notebooks
 RUN chmod -R 755 /app && chmod -R 755 /notebooks
 
 # Make sure that Jupyter is on the notebook users' path.
-# ENV PATH=$PATH:/usr/local/bin:$(pipenv--venv)/bin
+# ENV PATH=$PATH:/usr/local/bin:$(pipenv --venv)/bin
 # ENV JUPYTER_ROOT=/usr/local/bin
 
 USER appuser
