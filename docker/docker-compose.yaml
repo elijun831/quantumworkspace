@@ -4,8 +4,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "8888:8888"
     volumes:
+      - ./app:/app
       - ./notebooks:/notebooks
-    user: "appuser"
+    ports:
+      - 8888:8888
+    user: appuser
