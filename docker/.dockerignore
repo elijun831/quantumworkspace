@@ -1,8 +1,10 @@
 # Ignore everything
 **
 
-# Except Dockerfile
+# Except Dockerfile and necessary files
 !Dockerfile
+!Pipfile
+!Pipfile.lock
 
 # Ignore Python cache files
 **/__pycache__
@@ -25,7 +27,7 @@ Thumbs.db
 **/.ipynb_checkpoints
 
 # Ignore Python virtual environment
-/opt/venv
+venv
 
 # Ignore application directory
 /app
