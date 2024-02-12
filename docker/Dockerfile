@@ -17,6 +17,8 @@ RUN apt-get update && apt-get install -y \
     libffi-dev \
     liblapack-dev \
     libssl-dev \
+    texlive-latex-base \
+    latexmk \
     make \
     wget \
     zlib1g-dev \
@@ -55,13 +57,9 @@ RUN /bin/bash -c "source ~/.bashrc"
 ENV PATH=$PATH:/root/.local/share/virtualenvs/app-*/bin
 
 # Install optional packages for specific quantum frameworks (uncomment as needed)
-# # Uncomment the following lines and add them to your Pipfile to install these packages:
-# RUN pip3 install azure-quantum[qiskit]
-# RUN pip3 install azure-quantum[cirq]
-#   cirq \
-#   cirq-core[contrib] \
-#   scipy \
-#   pyquil \
+# Uncomment the following lines and add them to your Pipfile to install these packages:
+# Once you add the packages, make sure to lock them using "pipenv lock".
+# RUN pip3 pyquil \
 #   projectq \
 #   qutip \
 #   qulacs \
@@ -70,7 +68,6 @@ ENV PATH=$PATH:/root/.local/share/virtualenvs/app-*/bin
 #   pulser-pasqal \
 #   pytket \
 #   bloqade \
-#   braket \
 #   strangeworks \
 #   pyEPR-quantum \
 #   quantum-viz
