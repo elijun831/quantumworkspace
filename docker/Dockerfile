@@ -60,6 +60,11 @@ ENV PATH=$PATH:/root/.local/share/virtualenvs/app-*/bin
 # Uncomment the following lines and add them to your Pipfile to install these packages:
 # Once you add the packages, make sure to lock them using "pipenv lock".
 # RUN pip3 pyquil \
+#   "azure-quantum[qiskit]" \
+#   "azure-quantum[cirq]" \
+#   cirq \
+#   "cirq-core[contrib]" \
+#   openfermion \
 #   projectq \
 #   qutip \
 #   qulacs \
