@@ -1,0 +1,25 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+jupyter = "*"
+notebook_shim = "*"
+qsharp = "*"
+azure-quantum = "*"
+qiskit = "*"
+qiskit-ibm-runtime = "*"
+"qiskit[visualization]" = "*"
+amazon-braket-sdk = "*"
+amazon-braket-algorithm-library = "*"
+ipykernel = "*"
+ipympl = "*"
+dataclasses = "*"
+pydantic = "*"
+referencing = "*"
+
+[requires]
+python_version = "3.12"
