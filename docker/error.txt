@@ -1,0 +1,13 @@
+$ docker run -p 8888:8888 quantumpackage
+Creating a virtualenv for this project...
+Pipfile: /app/Pipfile
+Using /usr/local/bin/python (3.12.2) to create virtualenv...
+created virtual environment CPython3.12.2.final.0-64 in 531ms
+  creator CPython3Posix(dest=/home/appuser/.local/share/virtualenvs/app-4PlAip0Q, clear=False, no_vcs_ignore=False, global=False)
+  seeder FromAppData(download=False, pip=bundle, via=copy, app_data_dir=/home/appuser/.local/share/virtualenv)
+    added seed packages: pip==23.3.1
+  activators BashActivator,CShellActivator,FishActivator,NushellActivator,PowerShellActivator,PythonActivator
+
+✔ Successfully created virtual environment!
+Virtualenv location: /home/appuser/.local/share/virtualenvs/app-4PlAip0Q
+Error: the command jupyter could not be found within PATH or Pipfile's [scripts].
