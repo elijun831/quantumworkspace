@@ -9,6 +9,7 @@ verify_ssl = true
 jupyter = "*"
 qsharp = "*"
 azure-quantum = "*"
+"azure-quantum[qiskit]" = "*"
 qiskit = "*"
 qiskit-ibm-runtime = "*"
 "qiskit[visualization]" = "*"
