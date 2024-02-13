@@ -56,22 +56,6 @@ RUN /bin/bash -c "source ~/.bashrc"
 # Add the pipenv virtual environment to the PATH
 ENV PATH=$PATH:/root/.local/share/virtualenvs/app-*/bin
 
-# Install optional packages for specific quantum frameworks (uncomment as needed)
-# Uncomment the following lines and add them to your Pipfile to install these packages:
-# Once you add the packages, make sure to lock them using "pipenv lock".
-# RUN pip3 pyquil \
-#   projectq \
-#   qutip \
-#   qulacs \
-#   strawberryfields \
-#   PennyLane \
-#   pulser-pasqal \
-#   pytket \
-#   bloqade \
-#   strangeworks \
-#   pyEPR-quantum \
-#   quantum-viz
-
 # Expose port for Jupyter Notebook
 EXPOSE 8888
 EXPOSE 5678
