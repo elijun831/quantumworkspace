@@ -44,10 +44,6 @@ WORKDIR /app
 COPY Pipfile Pipfile.lock /app/
 RUN pipenv install --deploy
 
-# Install Jupyter
-RUN pipenv install jupyter
-RUN pipenv run jupyter --version
-
 # Get the path of the pipenv virtual environment and store it in an environment variable
 RUN pipenv --venv > venv_path
 RUN echo "export PIPENV_VENV_PATH=$(pipenv --venv)" > ~/.bashrc
