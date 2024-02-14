@@ -80,5 +80,5 @@ RUN chmod -R 755 /app && chmod -R 755 /notebooks
 
 USER root
 
-# Start Jupyter Notebook
-CMD ["pipenv", "run", "jupyter", "notebook", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+# Start JupyterLab
+CMD ["pipenv", "run", "jupyter", "lab", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
