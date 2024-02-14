@@ -1,4 +1,4 @@
-# QuantumPackage
+# QuantumWorkspace
 
 This repository contains a Dockerfile for setting up a Jupyer notebook environment with Qiskit, QSharp, and Amazon Braket, built upon the latest Debian version.
 
@@ -27,7 +27,7 @@ docker build -t quantumpackage .
 
 4. Run the Docker container:
 ```
-docker run -p 8888:8888 quantumpackage
+docker run -p 8888:8888 quantumworkspace
 ```
 
 5. After running the Docker container, you should see a URL in the terminal output that looks like this:
