@@ -68,7 +68,7 @@ data:
 # On Linux and MacOS, you can use the command "echo -n 'value' | base64" to encode. 
 # On Windows, you can use the PowerShell command "[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("value"))" to encode.
 ---
-# Default values for quantumpackage.
+# Default values for quantumworkspace.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
