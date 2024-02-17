@@ -7,7 +7,7 @@ spec:
   containers:
   - name: quantumworkspace
     image: elijun831/quantumworkspace:1.0.0
-    command: ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+    command: ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
     ports:
     - containerPort: 8888
     resources:
