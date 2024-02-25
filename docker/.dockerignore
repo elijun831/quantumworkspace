@@ -1,8 +1,9 @@
 # Ignore everything
-**
 
 # Except Dockerfile and necessary files
 !Dockerfile
+
+# Pipfile and Pipfile.lock are moved to a different location
 !Pipfile
 !Pipfile.lock
 
