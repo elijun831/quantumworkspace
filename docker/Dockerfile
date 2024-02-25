@@ -24,8 +24,10 @@ RUN apt-get update && apt-get install -y \
     zlib1g-dev \
     python3 \
     python3-pip \
-    python3-venv && \
-    apt-get clean
+    python3-venv \
+    apt-utils && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install Rust, update it, create a directory, and set the working directory to the new Rust application directory
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
@@ -41,7 +43,7 @@ RUN pip3 install --upgrade pip
 # Install pipenv
 RUN pip3 install pipenv
 WORKDIR /app
-COPY Pipfile Pipfile.lock /app/
+COPY ../Pipfile ../Pipfile.lock /app/
 RUN pipenv install --deploy
 
 # Get the path of the pipenv virtual environment and store it in an environment variable
@@ -52,7 +54,7 @@ RUN /bin/bash -c "source ~/.bashrc"
 # Add the pipenv virtual environment to the PATH
 ENV PATH=$PATH:/root/.local/share/virtualenvs/app-*/bin
 
-# Expose port for Jupyter Notebook
+# Expose port for Jupyter Notebook as well as debugging
 EXPOSE 8888
 EXPOSE 5678
 
@@ -62,7 +64,7 @@ WORKDIR /app
 # Create a directory for notebooks
 RUN mkdir /notebooks
 
-# Specify the directory as a volume
+# Specify the directory as a volume for persistent storage
 VOLUME /notebooks
 
 # Create non-root user for security
@@ -71,14 +73,14 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 # Change ownership of the notebooks directory to appuser
 RUN chown -R appuser:appuser /notebooks
 
-# Change permissions of the directories to ensure appuser can write to them
+# Change permissions of the directories for appuser
 RUN chmod -R 755 /app && chmod -R 755 /notebooks
 
-# Make sure that Jupyter is on the notebook users' path.
-# ENV PATH=$PATH:/usr/local/bin:$(pipenv --venv)/bin
-# ENV JUPYTER_ROOT=/usr/local/bin
+# Switch to the non-root user
+USER appuser
 
-USER root
+# Install Jupyter packages
+Run pipenv install jupyterlab notebook voila
 
-# Start JupyterLab
+# Start JupyterLab within Pipenv environment
 CMD ["pipenv", "run", "jupyter", "lab", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
