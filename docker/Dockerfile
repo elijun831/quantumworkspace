@@ -1,5 +1,5 @@
 # Base image
-FROM python:3.12-bullseye
+FROM debian:latest
 
 # Set environment variables
 ENV LANG C.UTF-8
