@@ -80,7 +80,7 @@ RUN chmod -R 755 /app && chmod -R 755 /notebooks
 USER appuser
 
 # Install Jupyter packages
-Run pipenv install jupyterlab notebook voila
+RUN pipenv install jupyterlab notebook voila
 
 # Start JupyterLab within Pipenv environment
 CMD ["pipenv", "run", "jupyter", "lab", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
