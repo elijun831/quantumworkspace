@@ -1,5 +1,5 @@
 # Base image
-FROM python:3.11-bullseye
+FROM python:3.12-bullseye
 
 # Set environment variables
 ENV LANG C.UTF-8
