@@ -43,7 +43,7 @@ RUN pip3 install --upgrade pip
 # Install pipenv
 RUN pip3 install pipenv
 WORKDIR /app
-COPY ../Pipfile ../Pipfile.lock /app/
+COPY /Pipfile /Pipfile.lock /app/
 RUN pipenv install --deploy
 
 # Get the path of the pipenv virtual environment and store it in an environment variable
