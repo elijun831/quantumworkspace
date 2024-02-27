@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONFAULTHANDLER 1
 
 # Install necessary packages
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y bash\
     build-essential \
     curl \
     g++ \
@@ -48,6 +48,9 @@ RUN pipenv install --deploy
 RUN pipenv --venv > venv_path
 RUN echo "export PIPENV_VENV_PATH=$(pipenv --venv)" > ~/.bashrc
 RUN /bin/bash -c "source ~/.bashrc"
+
+# Switch the default shell to bash
+SHELL ["/bin/bash", "-c"]
 
 # Add the pipenv virtual environment to the PATH
 ENV PATH=$PATH:/root/.local/share/virtualenvs/app-*/bin
