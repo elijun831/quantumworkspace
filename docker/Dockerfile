@@ -35,6 +35,9 @@ ENV PROJECT_DIR /usr/local/src/webapp
 RUN mkdir -p ${PROJECT_DIR}/rust
 WORKDIR ${PROJECT_DIR}/rust
 
+# Switch the default shell to bash
+SHELL ["/bin/bash", "-c"]
+
 # Upgrade pip
 RUN pip3 install --upgrade pip
 
