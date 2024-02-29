@@ -1,5 +1,6 @@
+# Version 2.0.0
 # Base image
-FROM python:3.11-bullseye
+FROM debian:latest
 
 # Set environment variables
 ENV LANG C.UTF-8
@@ -8,7 +9,10 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONFAULTHANDLER 1
 
 # Install necessary packages
-RUN apt-get update && apt-get install -y bash\
+RUN apt-get update && apt-get install -y \
+    python3.11 \
+    python3-pip \
+    python3-venv \
     build-essential \
     curl \
     g++ \
@@ -22,10 +26,8 @@ RUN apt-get update && apt-get install -y bash\
     make \
     wget \
     zlib1g-dev \
-    python3 \
-    python3-pip \
-    python3-venv && \
-    apt-get clean
+    bash \
+    && apt-get clean
 
 # Install Rust, update it, create a directory, and set the working directory to the new Rust application directory
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
@@ -35,13 +37,25 @@ ENV PROJECT_DIR /usr/local/src/webapp
 RUN mkdir -p ${PROJECT_DIR}/rust
 WORKDIR ${PROJECT_DIR}/rust
 
+# Create a virtual environment
+RUN python3 -m venv /venv
+
+# Activate the virtual environment
+ENV PATH="/venv/bin:$PATH"
+
 # Upgrade pip
 RUN pip3 install --upgrade pip
 
 # Install pipenv
 RUN pip3 install pipenv
+
+# Set up work directory
 WORKDIR /app
+
+# Copy Pipfile and Pipfile.lock
 COPY Pipfile Pipfile.lock /app/
+
+# Install dependencies using pipenv
 RUN pipenv install --deploy
 
 # Get the path of the pipenv virtual environment and store it in an environment variable
@@ -57,7 +71,6 @@ ENV PATH=$PATH:/root/.local/share/virtualenvs/app-*/bin
 
 # Expose port for Jupyter Notebook
 EXPOSE 8888
-EXPOSE 5678
 
 # Set up work directory
 WORKDIR /app
@@ -74,14 +87,14 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 # Change ownership of the notebooks directory to appuser
 RUN chown -R appuser:appuser /notebooks
 
+# Switch to appuser
+USER appuser
+
 # Change permissions of the directories to ensure appuser can write to them
 RUN chmod -R 755 /app && chmod -R 755 /notebooks
 
-# Make sure that Jupyter is on the notebook users' path.
-# ENV PATH=$PATH:/usr/local/bin:$(pipenv --venv)/bin
-# ENV JUPYTER_ROOT=/usr/local/bin
-
-USER root
+# Install Jupyter packages
+RUN pipenv install jupyterlab notebook voila
 
 # Start JupyterLab
 CMD ["pipenv", "run", "jupyter", "lab", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
