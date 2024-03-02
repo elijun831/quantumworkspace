@@ -44,31 +44,32 @@ ENV PROJECT_DIR /usr/local/src/webapp
 RUN mkdir -p ${PROJECT_DIR}/rust
 WORKDIR ${PROJECT_DIR}/rust
 
-# Upgrade pip
-RUN pip3 install --upgrade pip
+# Upgrade pip within the virtual environment
+RUN python3.11 -m venv /venv && \
+    /venv/bin/pip install --upgrade pip
 
-# Install pipenv
-RUN pip3 install pipenv
+# Install pipenv within Rust environment
+RUN /venv/bin/pip install pipenv
 
-# Set up work directory
+# Set up work directory for Python application
 WORKDIR /app
 
 # Copy Pipfile and Pipfile.lock
 COPY Pipfile Pipfile.lock /app/
 
 # Install dependencies using pipenv
-RUN pipenv install --deploy
+RUN /venv/bin/pipenv install --deploy
 
 # Get the path of the pipenv virtual environment and store it in an environment variable
-RUN pipenv --venv > venv_path
-RUN echo "export PIPENV_VENV_PATH=$(pipenv --venv)" > ~/.bashrc
+RUN /venv/bin/pipenv --venv > venv_path
+RUN echo "export PIPENV_VENV_PATH=$(/venv/bin/pipenv --venv)" > ~/.bashrc
 RUN /bin/bash -c "source ~/.bashrc"
 
 # Switch the default shell to bash
 SHELL ["/bin/bash", "-c"]
 
 # Add the pipenv virtual environment to the PATH
-ENV PATH=$PATH:/root/.local/share/virtualenvs/app-*/bin
+ENV PATH=$PATH:/venv/bin
 
 # Expose port for Jupyter Notebook and debugging
 EXPOSE 8888
@@ -99,4 +100,5 @@ RUN chmod -R 755 /app && chmod -R 755 /notebooks
 
 # Start JupyterLab
 CMD ["pipenv", "run", "jupyter", "lab", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+
 
