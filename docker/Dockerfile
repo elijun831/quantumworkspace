@@ -94,4 +94,4 @@ USER appuser
 RUN chmod -R 755 /app && chmod -R 755 /notebooks
 
 # Start JupyterLab
-CMD ["/venv/bin/pipenv", "run", "jupyter", "lab", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--no-browser", "--allow-root"]
+CMD ["/venv/bin/pipenv", "run", "jupyter", "lab", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
