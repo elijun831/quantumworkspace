@@ -98,9 +98,6 @@ USER appuser
 # Change permissions of the directories to ensure appuser can write to them
 RUN chmod -R 755 /app && chmod -R 755 /notebooks
 
-# Custom Jupyter Lab configuration
-COPY jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
-
 # Start JupyterLab
 CMD ["pipenv", "run", "jupyter", "lab", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
 
