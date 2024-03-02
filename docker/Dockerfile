@@ -10,71 +10,53 @@ ENV PYTHONFAULTHANDLER 1
 
 # Install necessary packages
 RUN apt-get update && apt-get install -y \
-    python3.11 \
-    python3-pip \
-    python3-venv \
-    build-essential \
-    curl \
-    vim \
-    vim-common \
-    vim-runtime \
-    nano \
-    flameshot \
-    keepassxc \
-    bleachbit \
-    g++ \
-    git \
-    libblas-dev \
-    libffi-dev \
-    liblapack-dev \
-    libssl-dev \
-    texlive-latex-base \
-    latexmk \
-    make \
-    wget \
-    zlib1g-dev \
-    bash \
-    && apt-get clean
+python3.11 \
+build-essential \
+curl \
+vim \
+vim-common \
+vim-runtime \
+nano \
+flameshot \
+keepassxc \
+bleachbit \
+g++ \
+git \
+libblas-dev \
+libffi-dev \
+liblapack-dev \
+libssl-dev \
+texlive-latex-base \
+latexmk \
+make \
+wget \
+zlib1g-dev \
+bash \
+&& apt-get clean
 
 # Install Rust, update it, create a directory, and set the working directory to the new Rust application directory
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
-    $HOME/.cargo/bin/rustup update
+$HOME/.cargo/bin/rustup update
 ENV PATH="/root/.cargo/bin:${PATH}"
 ENV PROJECT_DIR /usr/local/src/webapp
 RUN mkdir -p ${PROJECT_DIR}/rust
 WORKDIR ${PROJECT_DIR}/rust
 
-# Upgrade pip within the virtual environment
-RUN python3.11 -m venv /venv && \
-    /venv/bin/pip install --upgrade pip
-
-# Install pipenv within Rust environment
-RUN /venv/bin/pip install pipenv
+# Install pipenv & upgrade pip
+RUN pip install --upgrade pip
+RUN pip install pipenv
 
 # Set up work directory for Python application
 WORKDIR /app
 
-# Copy Pipfile and Pipfile.lock
+# Copy Pipfile and Pipfile.lock and install pipenv
 COPY Pipfile Pipfile.lock /app/
+RUN pipenv install --deploy
 
-# Install dependencies using pipenv
-RUN /venv/bin/pipenv install --deploy
+# Install Jupyter
+RUN pipenv install jupyter notebook jupyterlab voila 
 
-# Install Jupyter within the virtual environment
-RUN pipenv run pip install jupyter notebook jupyterlab volia
-
-# Get the path of the pipenv virtual environment and store it in an environment variable
-RUN /venv/bin/pipenv --venv > venv_path
-RUN echo "export PIPENV_VENV_PATH=$(/venv/bin/pipenv --venv)" > ~/.bashrc
-RUN /bin/bash -c "source ~/.bashrc"
-
-# Switch the default shell to bash
-SHELL ["/bin/bash", "-c"]
-
-# Add the pipenv virtual environment to the PATH
-ENV PATH=$PATH:/venv/bin
-
-# Expose port for Jupyter Notebook and debugging
+# Expose ports
 EXPOSE 8888
 EXPOSE 5678
 EXPOSE 8080
@@ -103,5 +85,3 @@ RUN chmod -R 755 /app && chmod -R 755 /notebooks
 
 # Start JupyterLab
 CMD ["pipenv", "run", "jupyter", "lab", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
-
-
