@@ -60,6 +60,9 @@ COPY Pipfile Pipfile.lock /app/
 # Install dependencies using pipenv
 RUN /venv/bin/pipenv install --deploy
 
+# Install Jupyter within the virtual environment
+RUN pipenv run pip install jupyter notebook jupyterlab volia
+
 # Get the path of the pipenv virtual environment and store it in an environment variable
 RUN /venv/bin/pipenv --venv > venv_path
 RUN echo "export PIPENV_VENV_PATH=$(/venv/bin/pipenv --venv)" > ~/.bashrc
