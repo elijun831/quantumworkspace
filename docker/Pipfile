@@ -6,6 +6,13 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+numpy = "*"
+scipy = "*"
+pandas = "*"
+sympy = "*"
+matplotlib = "*"
+bokeh = "*"
+plotly = "*"
 jupyter = "*"
 notebook = "*"
 jupyterlab = "*"
@@ -35,6 +42,12 @@ bloqade = "*"
 strangeworks = "*"
 pyEPR-quantum = "*"
 quantum-viz = "*"
+qcompute = "*"
+qbraid = "*"
+pasqal-sdk = "*"
+qadence = "*"
+
+
 
 [requires]
 python_version = "3.11"
