@@ -12,4 +12,11 @@ services:
     volumes:
       - ./notebooks:/notebooks
       - ./app:/app
-    user: "appuser"
+      - ./logs:/logs
+    user: 
+      - "appuser"
+      - "root"
+    environment:
+      - DEBUG=1
+      - JUPYTER_PORT=8888
+    command: ["bin/bash"]
