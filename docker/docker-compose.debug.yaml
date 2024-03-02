@@ -1,4 +1,4 @@
-version: '2.0.2'
+version: '2.0.3'
 services:
   webapp:
     build:
@@ -11,4 +11,5 @@ services:
       - "80:80"
     volumes:
       - ./notebooks:/notebooks
+      - ./app:/app
     user: "appuser"
