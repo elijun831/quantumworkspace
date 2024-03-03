@@ -61,7 +61,7 @@ RUN . /venv/bin/activate && \
     pip install pipenv
 
 # Install dependencies using pipenv
-RUN . /venv/bin/activate && pipenv install --deploy
+RUN PIPENV_IGNORE_VIRTUALENVS=1 . /venv/bin/activate && pipenv install --deploy
 
 # Install Jupyter within the virtual environment
 RUN . /venv/bin/activate && pipenv run pip install jupyter notebook jupyterlab voila
