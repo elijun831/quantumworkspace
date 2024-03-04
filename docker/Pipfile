@@ -46,9 +46,7 @@ strangeworks = "*"
 strawberryfields = "*"
 sympy = "*"
 voila = "*"
-
-
+requests = "*"
 
 [requires]
-python_version = "3.11"
-
+python_version = "3.11""
