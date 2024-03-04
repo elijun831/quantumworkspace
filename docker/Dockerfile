@@ -1,4 +1,4 @@
-# Version 2.0.31
+# Version 3.0.0
 # Base image
 FROM ubuntu:latest
 
@@ -58,28 +58,16 @@ COPY Pipfile Pipfile.lock /app/
 # Create and activate the virtual environment
 RUN python3.11 -m venv /venv
 ENV PATH="/venv/bin:${PATH}"
-RUN . /venv/bin/activate && pipenv install --deploy
-
-# Create and activate the virtual environment
-# RUN python3.11 -m venv /venv
-# ENV PATH="/venv/bin:${PATH}"
 
 # Install dependencies 
-# RUN pipenv install --deploy
-# RUN pipenv run pip install jupyter notebook jupyterlab voila
-
-# Install dependencies using pipenv
-RUN PIPENV_IGNORE_VIRTUALENVS=1 . /venv/bin/activate && pipenv install --deploy
-RUN . /venv/bin/activate && pipenv run pip install jupyter notebook jupyterlab voila
+RUN pipenv install --deploy --python 3.11
+RUN pipenv run pip install jupyter notebook jupyterlab voila
 
 # Expose ports
 EXPOSE 8888
 EXPOSE 5678
 EXPOSE 8080
 EXPOSE 80
-
-# Set up work directory
-WORKDIR /app
 
 # Create a directory for notebooks
 RUN mkdir /notebooks
@@ -92,7 +80,7 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 
 # Change ownership of the notebooks directory to appuser
 RUN chown -R appuser:appuser /notebooks
- 
+
 # Switch to appuser
 USER appuser
 
