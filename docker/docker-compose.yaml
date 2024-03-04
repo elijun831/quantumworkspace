@@ -5,12 +5,11 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "${JUPYTER_PORT:-8888}:8888"
-      - "${DEBUG_PORT:-5678}:5678"
+      - "8888:8888"
     volumes:
-      - ./app:/app:rw,uid=${PUID},gid=${PGID}
+      - ./app:/home/appuser/app:rw
       - ./notebooks:/notebooks
-    user: "${APP_USER:-appuser}"
+    user: "root"
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - PUID=5678
+      - PGID=5678
