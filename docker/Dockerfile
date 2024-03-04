@@ -49,10 +49,10 @@ RUN mkdir -p ${PROJECT_DIR}/rust
 WORKDIR ${PROJECT_DIR}/rust
 
 # Set up work directory for Python application
-WORKDIR /app
+WORKDIR /home/appuser/app
 
 # Copy Pipfile and Pipfile.lock
-COPY Pipfile Pipfile.lock /app/
+COPY Pipfile Pipfile.lock /home/appuser/app/
 
 # Create and activate the virtual environment
 RUN python3.11 -m venv /venv
@@ -83,16 +83,16 @@ RUN mkdir /notebooks
 VOLUME /notebooks
 
 # Create non-root user for security
-RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+RUN adduser -u 5678 --disabled-password --gecos "" appuser
 
 # Change ownership of the notebooks directory to appuser
 RUN chown -R appuser:appuser /notebooks
 
 # Switch to appuser
-USER appuser
+USER root
 
 # Change permissions of the directories to ensure appuser can write to them
 RUN chmod -R 755 /app && chmod -R 755 /notebooks
 
 # Start JupyterLab
-CMD ["/venv/bin/pipenv", "run", "jupyter", "lab", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+CMD ["pipenv", "run", "jupyter", "lab", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
