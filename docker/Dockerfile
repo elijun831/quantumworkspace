@@ -1,4 +1,4 @@
-# Version 2.0.3
+# Version 2.0.31
 # Base image
 FROM debian:latest
 
@@ -12,9 +12,7 @@ ENV PYTHONFAULTHANDLER 1
 RUN apt-get update && apt-get install -y \
     python3.11 \
     python3-venv \
-    python3-apt \
-    python3-setuptools \
-    python3-wheel \
+    python3-pip \
     build-essential \
     curl \
     vim \
@@ -40,12 +38,17 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean
 
 # Install Rust, update it, create a directory, and set the working directory to the new Rust application directory
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
-    $HOME/.cargo/bin/rustup update
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup-init.sh
+RUN chmod +x rustup-init.sh
+RUN ./rustup-init.sh -y
 ENV PATH="/root/.cargo/bin:${PATH}"
-ENV PROJECT_DIR /usr/local/src/webapp
-RUN mkdir -p ${PROJECT_DIR}/rust
-WORKDIR ${PROJECT_DIR}/rust
+
+# Create Rust project directory (if necessary)
+RUN mkdir -p /usr/local/src/webapp/rust
+
+# Install Pipenv
+RUN python3.11 -m ensurepip --upgrade # Ensure pip is updated
+RUN pip install pipenv
 
 # Set up work directory for Python application
 WORKDIR /app
@@ -56,14 +59,10 @@ COPY Pipfile Pipfile.lock /app/
 # Create and activate the virtual environment
 RUN python3.11 -m venv /venv
 ENV PATH="/venv/bin:${PATH}"
-RUN . /venv/bin/activate && \
-    pip install --upgrade pip && \
-    pip install pipenv
+RUN . /venv/bin/activate && pipenv install --deploy
 
 # Install dependencies using pipenv
 RUN PIPENV_IGNORE_VIRTUALENVS=1 . /venv/bin/activate && pipenv install --deploy
-
-# Install Jupyter within the virtual environment
 RUN . /venv/bin/activate && pipenv run pip install jupyter notebook jupyterlab voila
 
 # Expose ports
@@ -93,5 +92,5 @@ USER appuser
 # Change permissions of the directories to ensure appuser can write to them
 RUN chmod -R 755 /app && chmod -R 755 /notebooks
 
-# Start JupyterLab
+# Start JupyterLab (Modified CMD)
 CMD ["/venv/bin/pipenv", "run", "jupyter", "lab", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
