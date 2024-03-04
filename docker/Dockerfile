@@ -11,7 +11,7 @@ ENV PYTHONFAULTHANDLER 1
 # Install necessary packages
 RUN apt-get update && apt-get install -y \
     python3.11 \
-    python3-venv \
+    python3.11-venv \
     python3-pip \
     build-essential \
     curl \
@@ -46,12 +46,11 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 # Create Rust project directory (if necessary)
 RUN mkdir -p /usr/local/src/webapp/rust
 
-# Install Pipenv
-RUN python3.11 -m ensurepip --upgrade # Ensure pip is updated
-RUN pip install pipenv
-
 # Set up work directory for Python application
 WORKDIR /app
+
+# Install Pipenv
+RUN python3.11 -m pip install pipenv
 
 # Copy Pipfile and Pipfile.lock
 COPY Pipfile Pipfile.lock /app/
@@ -60,6 +59,14 @@ COPY Pipfile Pipfile.lock /app/
 RUN python3.11 -m venv /venv
 ENV PATH="/venv/bin:${PATH}"
 RUN . /venv/bin/activate && pipenv install --deploy
+
+# Create and activate the virtual environment
+# RUN python3.11 -m venv /venv
+# ENV PATH="/venv/bin:${PATH}"
+
+# Install dependencies 
+# RUN pipenv install --deploy
+# RUN pipenv run pip install jupyter notebook jupyterlab voila
 
 # Install dependencies using pipenv
 RUN PIPENV_IGNORE_VIRTUALENVS=1 . /venv/bin/activate && pipenv install --deploy
@@ -85,7 +92,7 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 
 # Change ownership of the notebooks directory to appuser
 RUN chown -R appuser:appuser /notebooks
-
+ 
 # Switch to appuser
 USER appuser
 
