@@ -17,7 +17,7 @@ Thumbs.db
 **/.ipynb_checkpoints
 
 # Ignore Python virtual environment - Essential for efficient build contexts
-venv/ 
+venv/
 
 # Include essential build files - Ensures successful builds
 !Dockerfile
@@ -25,7 +25,7 @@ venv/
 !Pipfile.lock
 
 # Assuming your source code is in '/app', adjust if necessary
-!app/ 
+!app/
 
 # Include the notebooks directory - Your core workspace!
-!notebooks/ 
+!notebooks/
