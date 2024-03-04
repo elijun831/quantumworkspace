@@ -1,6 +1,6 @@
 # Version 2.0.31
 # Base image
-FROM debian:latest
+FROM ubuntu:latest
 
 # Set environment variables
 ENV LANG C.UTF-8
