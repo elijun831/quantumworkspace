@@ -1,3 +1,5 @@
+# Required Installations #
+
 Just copy and past the following into your terminal on your computer or your Linux virtual machine.
 
 Install Python 3.11.8 and activate Pipenv
