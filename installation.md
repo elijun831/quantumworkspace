@@ -2,7 +2,7 @@
 
 Just copy and past the following into your terminal on your computer or your Linux virtual machine.
 
-Install Python 3.11.8 and activate Pipenv
+## Python 3.11.8 ##
 ```
 sudo apt update && sudo apt upgrade -y
 sudo apt update && sudo apt install software-properties-common build-essential libffi-dev libssl-dev zlib1g-dev libncurses5-dev libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev libssl-dev libsqlite3-dev wget libbz2-dev pkg-config
@@ -15,14 +15,14 @@ sudo make altinstall
 python3.11 --version
 ```
 
-Download and go to a Pipenv shell
+## Download Pipenv and go to a Pipenv shell ##
 ```
 python3.11 -m pipenv shell
 python3.11 -m pip install --user pipenv
 python3.11 -m pipenv shell
 ```
 
-Install Docker
+## Docker ##
 ```
 sudo apt-get update
 sudo apt-get install ca-certificates curl
@@ -38,7 +38,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 sudo docker run hello-world
 ```
 
-Install Microk8s and start it
+## Microk8s ##
 ```
 sudo snap install microk8s --classic
 sudo ufw allow in on cni0 && sudo ufw allow out on cni0
@@ -49,7 +49,7 @@ sudo microk8s enable storage
 sudo microk8s start
 ```
 
-Install Helm
+## Helm ##
 ```
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
 sudo apt-get install apt-transport-https --yes
