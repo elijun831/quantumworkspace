@@ -88,7 +88,7 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser
 # Change ownership of the notebooks directory to appuser
 RUN chown -R appuser:appuser /notebooks
 
-# Switch to appuser
+# Switch to root
 USER root
 
 # Change permissions of the directories to ensure appuser can write to them
