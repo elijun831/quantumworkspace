@@ -1,4 +1,4 @@
-# Version 2.0.3
+# Version 2.0.4
 # Base image
 FROM debian:latest
 
@@ -16,6 +16,8 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     python3-setuptools \
     python3-wheel \
+    python3-distutils \
+    binutils \
     build-essential \
     curl \
     vim \
@@ -25,6 +27,7 @@ RUN apt-get update && apt-get install -y \
     flameshot \
     keepassxc \
     bleachbit \
+    nodejs \
     g++ \
     git \
     libblas-dev \
@@ -47,6 +50,9 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 ENV PROJECT_DIR /usr/local/src/webapp
 RUN mkdir -p ${PROJECT_DIR}/rust
 WORKDIR ${PROJECT_DIR}/rust
+
+# Install wasm-pack
+RUN cargo install wasm-pack
 
 # Set up work directory for Python application
 WORKDIR /home/appuser/app
