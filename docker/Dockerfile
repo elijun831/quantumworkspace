@@ -58,6 +58,9 @@ RUN cargo install wasm-pack
 # Set up work directory for Python application
 WORKDIR /home/appuser/app
 
+# Set up work directory for Python application
+WORKDIR /home/appuser/app
+
 # Copy Pipfile and Pipfile.lock
 COPY Pipfile Pipfile.lock /home/appuser/app/
 
@@ -73,6 +76,12 @@ RUN PIPENV_IGNORE_VIRTUALENVS=1 . /venv/bin/activate && pipenv install --deploy
 
 # Install Jupyter within the virtual environment
 RUN . /venv/bin/activate && pipenv run pip install jupyter notebook jupyterlab voila
+
+# Generate Jupyter Notebook config
+RUN . /venv/bin/activate && jupyter notebook --generate-config -y
+
+# Modify Jupyter Notebook config
+RUN mkdir -p /home/appuser/.jupyter && echo "c.NotebookApp.token = ''" >> /home/appuser/.jupyter/jupyter_notebook_config.py
 
 # Install Nginx
 RUN apt-get install -y nginx
