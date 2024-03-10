@@ -58,9 +58,6 @@ RUN cargo install wasm-pack
 # Set up work directory for Python application
 WORKDIR /home/appuser/app
 
-# Set up work directory for Python application
-WORKDIR /home/appuser/app
-
 # Copy Pipfile and Pipfile.lock
 COPY Pipfile Pipfile.lock /home/appuser/app/
 
