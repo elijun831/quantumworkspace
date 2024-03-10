@@ -77,6 +77,9 @@ RUN PIPENV_IGNORE_VIRTUALENVS=1 . /venv/bin/activate && pipenv install --deploy
 # Install Jupyter within the virtual environment
 RUN . /venv/bin/activate && pipenv run pip install jupyter notebook jupyterlab voila
 
+# Copy pre-configured Jupyter Notebook config
+COPY jupyter_notebook_config.py /home/appuser/.jupyter/jupyter_notebook_config.py
+
 # Generate Jupyter Notebook config
 RUN . /venv/bin/activate && jupyter notebook --generate-config -y
 
