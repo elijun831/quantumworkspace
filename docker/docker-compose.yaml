@@ -13,6 +13,7 @@ services:
     environment:
       - PUID=5678
       - PGID=5678
+    command: ["/bin/bash", "/start.sh"]
 
   nginx:
     image: nginx:latest
