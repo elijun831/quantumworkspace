@@ -41,6 +41,7 @@ RUN apt-get update && apt-get install -y \
     zlib1g-dev \
     bash \
     tree \
+    nginx \
     && apt-get clean
 
 # Install Rust, update it, create a directory, and set the working directory to the new Rust application directory
@@ -73,6 +74,16 @@ RUN PIPENV_IGNORE_VIRTUALENVS=1 . /venv/bin/activate && pipenv install --deploy
 # Install Jupyter within the virtual environment
 RUN . /venv/bin/activate && pipenv run pip install jupyter notebook jupyterlab voila
 
+# Install Nginx
+RUN apt-get install -y nginx
+
+# Remove default Nginx configuration
+RUN rm /etc/nginx/sites-enabled/default
+
+# Copy custom Nginx configuration
+COPY nginx.conf /etc/nginx/sites-available/jupyter
+RUN ln -s /etc/nginx/sites-available/jupyter /etc/nginx/sites-enabled/jupyter
+
 # Expose ports
 EXPOSE 8888
 EXPOSE 5678
@@ -94,6 +105,9 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser
 # Change ownership of the notebooks directory to appuser
 RUN chown -R appuser:appuser /notebooks
 
+# Copy startup script
+COPY start.sh /start.sh
+
 # Switch to root
 USER root
 
@@ -101,4 +115,4 @@ USER root
 RUN chmod -R 755 /app && chmod -R 755 /notebooks
 
 # Start JupyterLab
-CMD ["pipenv", "run", "jupyter", "lab", "--notebook-dir=/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+CMD ["/bin/bash", "/start.sh"]
