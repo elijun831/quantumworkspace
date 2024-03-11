@@ -150,4 +150,3 @@ RUN chmod -R 755 /app && chmod -R 755 /notebooks
 
 # Start JupyterLab
 CMD ["/bin/bash", "/start.sh"]
-~      
