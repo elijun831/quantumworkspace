@@ -110,13 +110,6 @@ EXPOSE 8080
 EXPOSE 443
 EXPOSE 80
 
-# Expose ports
-EXPOSE 8888
-EXPOSE 5678
-EXPOSE 8080
-EXPOSE 443
-EXPOSE 80
-
 # Copy the main Nginx configuration file
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
