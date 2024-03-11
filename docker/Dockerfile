@@ -2,6 +2,9 @@
 # Base image
 FROM debian:latest
 
+# Copy custom hosts file to /etc/hosts
+COPY hosts /etc/hosts
+
 # Set environment variables
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
@@ -83,21 +86,43 @@ RUN . /venv/bin/activate && jupyter notebook --generate-config -y
 # Modify Jupyter Notebook config
 RUN mkdir -p /home/appuser/.jupyter && echo "c.NotebookApp.token = ''" >> /home/appuser/.jupyter/jupyter_notebook_config.py
 
+# Copy SSL certificates
+COPY _wildcard.quantumworkspace.dev+3.pem /home/elijun9831/cloud/q/docker/
+COPY _wildcard.quantumworkspace.dev+3-key.pem /home/elijun9831/cloud/q/docker/
+
+# Copy SSL certificates to the Nginx certs directory
+COPY _wildcard.quantumworkspace.dev+3.pem /etc/nginx/certs/
+COPY _wildcard.quantumworkspace.dev+3-key.pem /etc/nginx/certs/
+
 # Install Nginx
 RUN apt-get install -y nginx
 
 # Remove default Nginx configuration
 RUN rm /etc/nginx/sites-enabled/default
 
-# Copy custom Nginx configuration
-COPY nginx.conf /etc/nginx/sites-available/jupyter
-RUN ln -s /etc/nginx/sites-available/jupyter /etc/nginx/sites-enabled/jupyter
+# Copy custom Nginx configuration to /etc/nginx/conf.d/
+COPY nginx.conf /etc/nginx/conf.d/jupyter.conf
 
 # Expose ports
 EXPOSE 8888
 EXPOSE 5678
 EXPOSE 8080
+EXPOSE 443
 EXPOSE 80
+
+# Expose ports
+EXPOSE 8888
+EXPOSE 5678
+EXPOSE 8080
+EXPOSE 443
+EXPOSE 80
+
+# Copy the main Nginx configuration file
+COPY ./nginx.conf /etc/nginx/nginx.conf
+
+# Copy SSL certificates to the appropriate location
+COPY ./_wildcard.quantumworkspace.dev+3.pem /etc/nginx/certs/
+COPY ./_wildcard.quantumworkspace.dev+3-key.pem /etc/nginx/certs/
 
 # Set up work directory
 WORKDIR /app
@@ -125,3 +150,4 @@ RUN chmod -R 755 /app && chmod -R 755 /notebooks
 
 # Start JupyterLab
 CMD ["/bin/bash", "/start.sh"]
+~      
