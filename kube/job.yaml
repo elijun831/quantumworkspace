@@ -1,11 +1,11 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: quantumworkspace
+  name: quantumworkspace-job
 spec:
   template:
     metadata:
-      name: quantumworkspace
+      name: quantumworkspace-job
     spec:
       containers:
       - name: quantumworkspace
