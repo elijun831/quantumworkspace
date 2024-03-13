@@ -3,18 +3,18 @@
 # Execute the following command by typing "kubectl apply -f deployment.yaml" in your terminal or Linux virtual machine.
 
 metadata:
-  name: quantumworkspace
+  name: quantumworkspace-deployment
   labels:
-    app: quantumworkspace
+    app: quantumworkspace-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: quantumworkspace
+      app: quantumworkspace-deployment
   template:
     metadata:
       labels:
-        app: quantumworkspace
+        app: quantumworkspace-deployment
     spec:
       containers:
       - name: quantumworkspace
