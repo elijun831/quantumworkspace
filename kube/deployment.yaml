@@ -1,9 +1,7 @@
-# This deployment setting assumes that a persistent disk was created in Google Cloud Platform (GCP) beforehand.
-# Visit the following link if you need instructions on creating a persistent disk in GCP: https://cloud.google.com/compute/docs/disks/add-persistent-disk?hl=en
+# This deployment setting assumes that a readWriteMany NFS volume was created in Google Cloud Platform (GCP) beforehand.
+# Visit the following link if you need instructions on creating a NFS volume: https://cloud.google.com/architecture/partners/netapp-cloud-volumes/creating-nfs-volumes
 # Execute the following command by typing "kubectl apply -f deployment.yaml" in your terminal or Linux virtual machine.
 
-apiVersion: apps/v1
-kind: Deployment
 metadata:
   name: quantumworkspace
   labels:
@@ -24,8 +22,8 @@ spec:
         ports:
         - containerPort: 443
         volumeMounts:
-        - mountPath: /mnt/disks/pv
-          name: gce-pd
+          - mountPath: /nfs-qtum
+            name: qtumnfs
         readinessProbe:
           httpGet:
             path: '/'
@@ -43,8 +41,19 @@ spec:
           periodSeconds: 5
           failureThreshold: 7
       volumes:
-      - name: gce-pd
-        gcePersistentDisk:
-          pdName: qtumdisk
-          fsType: ext4
-          readOnly: true
+      - name: qtumnfs
+        persistentVolumeClaim:
+          claimName: qtum-volume
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: qtum-volume
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  volumeName: qtum-volume
+  resources:
+    requests:
+      storage: 1Ti
