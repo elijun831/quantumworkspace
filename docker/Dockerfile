@@ -45,6 +45,7 @@ RUN apt-get update && apt-get install -y \
     bash \
     tree \
     nginx \
+    libnss3-tools \
     && apt-get clean
 
 # Install Rust, update it, create a directory, and set the working directory to the new Rust application directory
