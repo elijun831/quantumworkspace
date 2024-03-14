@@ -1,4 +1,4 @@
-# Version 2.0.4
+# Version 2.0.5
 # Base image
 FROM debian:latest
 
@@ -87,11 +87,7 @@ RUN . /venv/bin/activate && jupyter notebook --generate-config -y
 # Modify Jupyter Notebook config
 RUN mkdir -p /home/appuser/.jupyter && echo "c.NotebookApp.token = ''" >> /home/appuser/.jupyter/jupyter_notebook_config.py
 
-# Copy SSL certificates
-COPY _wildcard.quantumworkspace.dev+3.pem /home/elijun9831/cloud/q/docker/
-COPY _wildcard.quantumworkspace.dev+3-key.pem /home/elijun9831/cloud/q/docker/
-
-# Copy SSL certificates to the Nginx certs directory
+# Copy SSL certificates to the appropriate location
 COPY _wildcard.quantumworkspace.dev+3.pem /etc/nginx/certs/
 COPY _wildcard.quantumworkspace.dev+3-key.pem /etc/nginx/certs/
 
@@ -113,10 +109,6 @@ EXPOSE 80
 
 # Copy the main Nginx configuration file
 COPY ./nginx.conf /etc/nginx/nginx.conf
-
-# Copy SSL certificates to the appropriate location
-COPY ./_wildcard.quantumworkspace.dev+3.pem /etc/nginx/certs/
-COPY ./_wildcard.quantumworkspace.dev+3-key.pem /etc/nginx/certs/
 
 # Set up work directory
 WORKDIR /app
