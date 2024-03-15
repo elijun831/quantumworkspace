@@ -1,4 +1,3 @@
-# Version 2.0.5
 # Base image
 FROM debian:latest
 
@@ -87,15 +86,25 @@ RUN . /venv/bin/activate && jupyter notebook --generate-config -y
 # Modify Jupyter Notebook config
 RUN mkdir -p /home/appuser/.jupyter && echo "c.NotebookApp.token = ''" >> /home/appuser/.jupyter/jupyter_notebook_config.py
 
-# Copy SSL certificates to the appropriate location
-COPY _wildcard.quantumworkspace.dev+3.pem /etc/nginx/certs/
-COPY _wildcard.quantumworkspace.dev+3-key.pem /etc/nginx/certs/
+# Install mkcert and generate SSL certificate
+RUN apt-get update && apt-get install -y libnss3-tools && \
+    curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64" && \
+    chmod +x mkcert-v*-linux-amd64 && \
+    mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert && \
+    mkcert -install && \
+    mkcert -CAROOT && \
+    mkdir -p /etc/nginx/certs/ && \
+    mkcert -cert-file /etc/nginx/certs/_wildcard.quantumworkspace.dev+3.pem -key-file /etc/nginx/certs/_wildcard.quantumworkspace.dev+3-key.pem "*.quantumworkspace.dev" localhost 127.0.0.1 ::1
 
 # Install Nginx
 RUN apt-get install -y nginx
 
 # Remove default Nginx configuration
 RUN rm /etc/nginx/sites-enabled/default
+
+# Copy SSL certificates to the appropriate location
+COPY ./_wildcard.quantumworkspace.dev+3.pem /etc/nginx/certs/
+COPY ./_wildcard.quantumworkspace.dev+3-key.pem /etc/nginx/certs/
 
 # Copy custom Nginx configuration to /etc/nginx/conf.d/
 COPY nginx.conf /etc/nginx/conf.d/jupyter.conf
@@ -110,17 +119,14 @@ EXPOSE 80
 # Copy the main Nginx configuration file
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
-# Set up work directory
-WORKDIR /app
-
-# Create a directory for notebooks
-RUN mkdir /notebooks
-
-# Specify the directory as a volume
-VOLUME /notebooks
-
 # Create non-root user for security
 RUN adduser -u 5678 --disabled-password --gecos "" appuser
+
+# Create notebooks directory
+RUN mkdir -p /notebooks
+
+# Create app directory
+RUN mkdir -p /app
 
 # Change ownership of the notebooks directory to appuser
 RUN chown -R appuser:appuser /notebooks
