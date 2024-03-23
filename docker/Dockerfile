@@ -10,6 +10,8 @@ ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONFAULTHANDLER 1
+ENV DOMAIN quantumworkspace.dev
+ENV NGINX_PORT 80
 
 # Install necessary packages
 RUN apt-get update && apt-get install -y \
@@ -157,14 +159,20 @@ RUN apt-get update && \
     chmod 600 /etc/nginx/certs/_wildcard.quantumworkspace.dev+3-key.pem
 
 # Copy SSL certificates to the appropriate location
-COPY ./_wildcard.quantumworkspace.dev+3.pem /etc/nginx/certs/_wildcard.quantumworkspace.dev+3.pem
-COPY ./_wildcard.quantumworkspace.dev+3-key.pem /etc/nginx/certs/_wildcard.quantumworkspace.dev+3-key.pem
+# COPY ./_wildcard.quantumworkspace.dev+3.pem /etc/nginx/certs/_wildcard.quantumworkspace.dev+3.pem
+# COPY ./_wildcard.quantumworkspace.dev+3-key.pem /etc/nginx/certs/_wildcard.quantumworkspace.dev+3-key.pem
+
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+
+RUN chmod +x /docker-entrypoint.sh
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 # Install Nginx
-RUN apt-get install -y nginx
+# RUN apt-get install -y nginx
 
 # Remove default Nginx configuration
-RUN rm /etc/nginx/sites-enabled/default
+# RUN rm /etc/nginx/sites-enabled/default
 
 # Copy custom Nginx configuration to /etc/nginx/conf.d/
 COPY nginx.conf /etc/nginx/conf.d/jupyter.conf
@@ -180,8 +188,7 @@ EXPOSE 80
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
 # Create non-root user for security
-RUN adduser -u 5678 --disabled-password --gecos "" appuser
+# RUN adduser -u 5678 --disabled-password --gecos "" appuser
 
 # Create notebooks directory
 RUN mkdir -p /notebooks
-    
