@@ -131,32 +131,13 @@ EXPOSE 80
 
 # Copy the main Nginx configuration file
 COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/conf.d/jupyter.conf
 
 # Create non-root user for security
-RUN adduser -u 5678 --disabled-password --gecos "" appuser
+# RUN adduser -u 5678 --disabled-password --gecos "" appuser
 
 # Create notebooks directory
 RUN mkdir -p /notebooks
-
-# Install mkcert and generate SSL certificate
-RUN apt-get update && \
-    curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64" && \
-    chmod +x mkcert-v*-linux-amd64 && \
-    mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert && \
-    mkcert -install && \
-    mkcert -CAROOT && \
-    mkcert -cert-file /root/.local/share/mkcert/_wildcard.quantumworkspace.dev+3.pem -key-file /root/.local/share/mkcert/_wildcard.quantumworkspace.dev+3-key.pem "*.quantumworkspace.dev" localhost 127.0.0.1 ::1 && \
-    mkdir -p /etc/nginx/certs/ && \
-    mkdir -p /home/elijun9831/qtum/docker/certs/ && \
-    cp /root/.local/share/mkcert/_wildcard.quantumworkspace.dev+3.pem /etc/nginx/certs/_wildcard.quantumworkspace.dev+3.pem && \
-    cp /root/.local/share/mkcert/_wildcard.quantumworkspace.dev+3-key.pem /etc/nginx/certs/_wildcard.quantumworkspace.dev+3-key.pem && \
-    chown root:root /etc/nginx/certs/_wildcard.quantumworkspace.dev+3.pem /etc/nginx/certs/_wildcard.quantumworkspace.dev+3-key.pem && \
-    chmod 600 /etc/nginx/certs/_wildcard.quantumworkspace.dev+3-key.pem && \
-    mkcert "*.quantumworkspace.dev" localhost 127.0.0.1 ::1 && \
-    cp /root/.local/share/mkcert/_wildcard.quantumworkspace.dev+3.pem /etc/nginx/certs/_wildcard.quantumworkspace.dev+3.pem && \
-    cp /root/.local/share/mkcert/_wildcard.quantumworkspace.dev+3-key.pem /etc/nginx/certs/_wildcard.quantumworkspace.dev+3-key.pem && \
-    chown root:root /etc/nginx/certs/_wildcard.quantumworkspace.dev+3.pem /etc/nginx/certs/_wildcard.quantumworkspace.dev+3-key.pem && \
-    chmod 600 /etc/nginx/certs/_wildcard.quantumworkspace.dev+3-key.pem
 
 # Copy SSL certificates to the appropriate location
 # COPY ./_wildcard.quantumworkspace.dev+3.pem /etc/nginx/certs/_wildcard.quantumworkspace.dev+3.pem
@@ -173,22 +154,3 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 
 # Remove default Nginx configuration
 # RUN rm /etc/nginx/sites-enabled/default
-
-# Copy custom Nginx configuration to /etc/nginx/conf.d/
-COPY nginx.conf /etc/nginx/conf.d/jupyter.conf
-
-# Expose ports
-EXPOSE 8888
-EXPOSE 5678
-EXPOSE 8080
-EXPOSE 443
-EXPOSE 80
-
-# Copy the main Nginx configuration file
-COPY ./nginx.conf /etc/nginx/nginx.conf
-
-# Create non-root user for security
-# RUN adduser -u 5678 --disabled-password --gecos "" appuser
-
-# Create notebooks directory
-RUN mkdir -p /notebooks
